@@ -67,7 +67,10 @@ const LandingPage = () => {
 
     }, []);
 
+    const [isNavigating, setIsNavigating] = useState(false);
+
     const handleHoverLeft = () => {
+        if (isNavigating) return;
         gsap.to(leftSideRef.current, { width: '65%', duration: 0.6, ease: 'power2.inOut' });
         gsap.to(rightSideRef.current, { width: '35%', duration: 0.6, ease: 'power2.inOut' });
         gsap.to(leftContentRef.current, { scale: 1.05, duration: 0.5 });
@@ -75,6 +78,7 @@ const LandingPage = () => {
     };
 
     const handleHoverRight = () => {
+        if (isNavigating) return;
         gsap.to(leftSideRef.current, { width: '35%', duration: 0.6, ease: 'power2.inOut' });
         gsap.to(rightSideRef.current, { width: '65%', duration: 0.6, ease: 'power2.inOut' });
         gsap.to(rightContentRef.current, { scale: 1.05, duration: 0.5 });
@@ -82,12 +86,50 @@ const LandingPage = () => {
     };
 
     const handleReset = () => {
+        if (isNavigating) return;
         gsap.to([leftSideRef.current, rightSideRef.current], { width: '50%', duration: 0.6, ease: 'power2.inOut' });
         gsap.to([leftContentRef.current, rightContentRef.current], { scale: 1, opacity: 1, duration: 0.5 });
     };
 
+    const centerLogoRef = useRef(null);
+
+    const handleNavigate = (side) => {
+        if (isNavigating) return;
+        setIsNavigating(true);
+
+        // Fade out logo
+        gsap.to(centerLogoRef.current, { opacity: 0, scale: 0.8, duration: 0.5 });
+
+        if (side === 'left') {
+            // Expand Left to 100%, Shrink Right to 0%
+            gsap.to(leftSideRef.current, { width: '100%', duration: 0.8, ease: 'power2.inOut' });
+            gsap.to(rightSideRef.current, { width: '0%', duration: 0.8, ease: 'power2.inOut' });
+            gsap.to(rightContentRef.current, { opacity: 0, duration: 0.3 }); // Fade out right content quickly
+
+            setTimeout(() => {
+                navigate('/land-owner/welcome');
+            }, 800);
+        } else {
+            // Expand Right to 100%, Shrink Left to 0%
+            gsap.to(rightSideRef.current, { width: '100%', duration: 0.8, ease: 'power2.inOut' });
+            gsap.to(leftSideRef.current, { width: '0%', duration: 0.8, ease: 'power2.inOut' });
+            gsap.to(leftContentRef.current, { opacity: 0, duration: 0.3 }); // Fade out left content quickly
+
+            setTimeout(() => {
+                navigate('/investor/welcome');
+            }, 800);
+        }
+    };
+
     return (
         <div ref={containerRef} className="relative w-full h-screen flex overflow-hidden font-sans">
+
+            {/* CENTER LOGO TAG */}
+            <div ref={centerLogoRef} className="absolute top-8 left-1/2 transform -translate-x-1/2 z-50 bg-white/90 backdrop-blur-md px-6 py-2 rounded-full shadow-lg border border-gray-100 flex items-center gap-2 transition-opacity">
+                <div className="w-3 h-3 rounded-full bg-land-primary"></div>
+                <span className="font-bold text-gray-800 tracking-wider text-sm">SOLAR GRID</span>
+                <div className="w-3 h-3 rounded-full bg-invest-primary"></div>
+            </div>
 
             {/* ================= LEFT SIDE: LAND OWNER ================= */}
             <div
@@ -95,7 +137,7 @@ const LandingPage = () => {
                 className="relative h-full bg-land-bg text-land-primary flex flex-col justify-center items-center cursor-pointer border-r border-gray-200 overflow-hidden"
                 onMouseEnter={handleHoverLeft}
                 onMouseLeave={handleReset}
-                onClick={() => navigate('/land-owner/welcome')}
+                onClick={() => handleNavigate('left')}
                 style={{ width: '50%' }}
             >
                 {/* Background Gradients */}
@@ -152,7 +194,7 @@ const LandingPage = () => {
                 className="relative h-full bg-white text-invest-primary flex flex-col justify-center items-center cursor-pointer overflow-hidden"
                 onMouseEnter={handleHoverRight}
                 onMouseLeave={handleReset}
-                onClick={() => navigate('/investor/welcome')}
+                onClick={() => handleNavigate('right')}
                 style={{ width: '50%' }}
             >
                 {/* Background Gradients */}
@@ -201,13 +243,6 @@ const LandingPage = () => {
                         Start Investing <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
                     </button>
                 </div>
-            </div>
-
-            {/* CENTER LOGO TAG */}
-            <div className="absolute top-8 left-1/2 transform -translate-x-1/2 z-50 bg-white/90 backdrop-blur-md px-6 py-2 rounded-full shadow-lg border border-gray-100 flex items-center gap-2">
-                <div className="w-3 h-3 rounded-full bg-land-primary"></div>
-                <span className="font-bold text-gray-800 tracking-wider text-sm">SOLAR GRID</span>
-                <div className="w-3 h-3 rounded-full bg-invest-primary"></div>
             </div>
 
         </div>
