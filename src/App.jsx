@@ -1,0 +1,39 @@
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { useState } from 'react';
+
+import LandingPage from './pages/LandingPage';
+import LandOwnerWelcome from './pages/LandOwnerWelcome';
+import InvestorWelcome from './pages/InvestorWelcome';
+
+// Placeholders for Dashboard/Auth
+const LoginPlaceholder = () => <div className="p-10 text-center">Login Page</div>;
+const RegisterPlaceholder = () => <div className="p-10 text-center">Register Page</div>;
+const LandOwnerDashboard = () => <div className="p-10 text-center bg-land-bg h-screen text-land-primary">Land Owner Dashboard</div>;
+const InvestorDashboard = () => <div className="p-10 text-center bg-invest-bg h-screen text-invest-primary">Investor Dashboard</div>;
+
+function App() {
+  return (
+    <Router>
+      <div className="min-h-screen bg-gray-50 text-dark font-sans">
+        <Routes>
+          {/* Public Routes */}
+          <Route path="/" element={<LandingPage />} />
+          <Route path="/land-owner/welcome" element={<LandOwnerWelcome />} />
+          <Route path="/investor/welcome" element={<InvestorWelcome />} />
+
+          <Route path="/login" element={<LoginPlaceholder />} />
+          <Route path="/register" element={<RegisterPlaceholder />} />
+
+          {/* Private Routes (We will add protection later) */}
+          <Route path="/land-owner/*" element={<LandOwnerDashboard />} />
+          <Route path="/investor/*" element={<InvestorDashboard />} />
+
+          {/* Fallback */}
+          <Route path="*" element={<Navigate to="/" replace />} />
+        </Routes>
+      </div>
+    </Router>
+  );
+}
+
+export default App;
