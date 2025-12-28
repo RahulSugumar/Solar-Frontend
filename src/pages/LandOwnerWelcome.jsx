@@ -91,28 +91,45 @@ const LandOwnerWelcome = () => {
             y: -10, x: 5, duration: 4, repeat: -1, yoyo: true, ease: "power1.inOut", delay: 0.5
         });
 
+        gsap.to(".hero-float-card-2", {
+            y: 15, x: -5, duration: 5, repeat: -1, yoyo: true, ease: "power1.inOut", delay: 1
+        });
+
     }, []);
 
     return (
         <div className="min-h-screen bg-land-bg text-land-text font-sans overflow-x-hidden">
 
             {/* ================= NAVBAR ================= */}
-            <nav className="fixed top-0 w-full z-50 bg-white/80 backdrop-blur-md border-b border-green-100">
-                <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
-                    <div className="flex items-center gap-2 cursor-pointer" onClick={() => navigate('/')}>
-                        <div className="w-8 h-8 bg-land-primary rounded-lg flex items-center justify-center">
+            {/* ================= NAVBAR ================= */}
+            <nav className="fixed w-[100%] top-0 z-50 transition-all duration-300">
+                <div className="bg-white/70 backdrop-blur-xl border border-white/50 shadow-lg shadow-gray-200/20  px-6 py-4 flex justify-between items-center relative overflow-hidden">
+                    {/* Glass Shine Effect */}
+                    <div className="absolute top-0 left-0 w-full h-1/2 bg-gradient-to-b from-white/60 to-transparent opacity-50 pointer-events-none"></div>
+
+                    <div className="flex items-center gap-2 cursor-pointer z-10" onClick={() => navigate('/')}>
+                        <div className="w-10 h-10 bg-gradient-to-br from-land-primary to-green-600 rounded-full flex items-center justify-center shadow-md">
                             <Sprout className="text-white" size={20} />
                         </div>
-                        <span className="text-xl font-bold text-land-primary">SolarGrid <span className="text-sm font-normal text-gray-500">Land</span></span>
+                        <span className="text-2xl font-bold text-gray-800 tracking-tight font-display">SolarGrid<span className="text-land-primary">.</span></span>
                     </div>
-                    <div className="hidden md:flex gap-8 text-gray-600 font-medium">
-                        <a href="#how-it-works" className="hover:text-land-primary transition">How it Works</a>
-                        <a href="#calculator" className="hover:text-land-primary transition">Calculator</a>
-                        <a href="#safety" className="hover:text-land-primary transition">Safety</a>
+
+                    <div className="hidden md:flex gap-16 text-gray-600 font-medium z-10">
+                        <a href="#how-it-works" className="hover:text-land-primary transition relative group">
+                            How it Works
+                            <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-land-primary transition-all group-hover:w-full"></span>
+                        </a>
+                        <a href="#calculator" className="hover:text-land-primary transition relative group">
+                            Calculator
+                            <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-land-primary transition-all group-hover:w-full"></span>
+                        </a>
                     </div>
-                    <div className="flex gap-4">
-                        <button onClick={() => navigate('/login')} className="px-5 py-2 text-land-primary font-bold hover:bg-green-50 rounded-full transition">Log In</button>
-                        <button onClick={() => navigate('/register')} className="px-6 py-2 bg-land-primary text-white font-bold rounded-full hover:bg-green-700 shadow-lg shadow-green-200 transition transform hover:scale-105">Get Started</button>
+
+                    <div className="flex gap-4 z-10">
+                        <button onClick={() => navigate('/login')} className="px-6 py-2.5 text-gray-600 font-bold hover:text-land-primary transition">Log In</button>
+                        <button onClick={() => navigate('/register')} className="px-6 py-2.5 bg-gray-900 text-white font-bold rounded-full hover:bg-black hover:scale-105 transition shadow-lg flex items-center gap-2">
+                            Get Started
+                        </button>
                     </div>
                 </div>
             </nav>
@@ -125,8 +142,10 @@ const LandOwnerWelcome = () => {
 
                 <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
                     <div ref={heroContentRef}>
-                        <div className="inline-flex items-center gap-2 px-4 py-2 bg-green-100 text-land-primary rounded-full font-bold text-sm mb-6">
-                            <CheckCircle size={16} /> Verified Govt. approved Solar Projects
+                        <div className="inline-flex items-center gap-2 px-4 py-2 bg-green-100 text-land-primary rounded-full font-bold text-sm mb-6 relative overflow-hidden">
+                            <div className="w-2 h-2 bg-green-500 rounded-full animate-ping absolute "></div>
+                            <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+                            Verified Govt. approved Solar Projects
                         </div>
                         <h1 className="text-6xl lg:text-7xl font-bold font-display tracking-tight leading-tight text-gray-900 mb-6 lining-nums">
                             Turn Idle Land into <br />
@@ -169,9 +188,24 @@ const LandOwnerWelcome = () => {
                                 </div>
                                 <div>
                                     <p className="text-xs text-gray-500 font-bold uppercase">Monthly Payout</p>
-                                    <p className="text-xl font-bold text-gray-900 font-display lining-nums">₹ 45,000</p>
+                                    <p className="text-xl font-bold text-gray-900 font-sans lining-nums">₹ 45,000</p>
                                 </div>
                             </div>
+
+                            {/* Secondary Floating Card */}
+                            <div className="hero-float-card-2 absolute top-8 right-8 bg-white/90 backdrop-blur p-4 rounded-xl shadow-lg flex items-center gap-4">
+                                <div className="w-12 h-12 bg-yellow-100 rounded-full flex items-center justify-center text-yellow-600">
+                                    <Sprout size={24} />
+                                </div>
+                                <div>
+                                    <p className="text-xs text-gray-500 font-bold uppercase">CO₂ Reduced</p>
+                                    <p className="text-xl font-bold text-gray-900 font-sans lining-nums">12 Tons</p>
+                                </div>
+                            </div>
+
+                            {/* Floating Particles */}
+                            <div className="absolute top-1/4 left-1/4 w-3 h-3 bg-yellow-400 rounded-full blur-[2px] animate-pulse opacity-60"></div>
+                            <div className="absolute bottom-1/3 right-1/4 w-2 h-2 bg-green-400 rounded-full blur-[1px] animate-ping opacity-40"></div>
                         </div>
                     </div>
                 </div>
@@ -265,7 +299,7 @@ const LandOwnerWelcome = () => {
                                         <div className={`w-20 h-20 rounded-2xl flex items-center justify-center text-3xl bg-white shadow-lg border border-white/60 group-hover:scale-110 transition-transform duration-500 ${step.color.split(' ')[1]}`}>
                                             <step.icon size={36} strokeWidth={1.5} className={step.animClass} />
                                         </div>
-                                        <span className="text-8xl font-black text-gray-900/5 select-none font-display lining-nums">{i + 1}</span>
+                                        <span className="text-8xl font-black text-gray-400 select-none font-display lining-nums">{i + 1}</span>
                                     </div>
 
                                     <div className="mb-3 flex items-center gap-2">
@@ -344,8 +378,8 @@ const LandOwnerWelcome = () => {
                                                 <div className="w-full h-2 bg-gray-100 rounded mb-2 w-3/4"></div>
                                                 <div className="w-full h-2 bg-gray-100 rounded mb-2"></div>
                                                 <div className="w-full h-2 bg-gray-100 rounded mb-4 w-5/6"></div>
-                                                <div className="w-12 h-12 rounded-full bg-purple-100 text-purple-500 flex items-center justify-center mt-4">
-                                                    <Lock key="lock" size={24} />
+                                                <div className="w-12 h-12 rounded-full bg-purple-100 text-purple-00 flex items-center justify-center mt-4">
+                                                    <Lock key="lock" size={24} className='animate-pulse' />
                                                 </div>
                                             </div>
                                             <div className="absolute -right-4 -bottom-4 w-16 h-16 bg-purple-200/50 rounded-full blur-xl animate-pulse"></div>
@@ -374,71 +408,108 @@ const LandOwnerWelcome = () => {
             </div>
 
             {/* ================= CALCULATOR ================= */}
-            <div id="calculator" className="py-24 bg-land-primary text-white relative overflow-hidden">
-                <div className="absolute top-0 right-0 w-[400px] h-[400px] bg-white opacity-5 rounded-full blur-3xl"></div>
+            <div id="calculator" className="py-24 bg-land-bgcalc text-white relative overflow-hidden">
+                {/* Background Rotating Sunburst */}
+                <div className="absolute top-1/2 right-0 -translate-y-1/2 w-[800px] h-[800px] bg-gradient-to-r from-white/5 to-transparent rounded-full blur-3xl animate-[spin_60s_linear_infinite] origin-center -mr-20"></div>
 
-                <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+                {/* Floating Coins/Elements Background */}
+                <div className="absolute top-20 right-20 animate-bounce delay-700 opacity-20">
+                    <Banknote size={64} className="text-green-300" />
+                </div>
+                <div className="absolute bottom-20 left-20 animate-bounce delay-100 opacity-10">
+                    <Sun size={80} className="text-yellow-300" />
+                </div>
+
+                <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-2 gap-16 items-center relative z-10">
                     <div>
-                        <h2 className="text-4xl font-bold mb-6 font-display lining-nums">Estimate Your Earnings</h2>
-                        <p className="text-green-100 text-xl mb-12">
-                            See how much your idle land could be generating. Based on average solar performance in India.
+                        <div className="inline-block px-4 py-1.5 bg-green-400/20 border border-green-400/30 rounded-full text-green-100 text-sm font-bold mb-6 backdrop-blur">
+                            💰 ROI Calculator
+                        </div>
+                        <h2 className="text-5xl font-bold mb-6 font-display lining-nums leading-tight">
+                            Estimate Your <br /> <span className="text-green-300">Annual Earnings</span>
+                        </h2>
+                        <p className="text-green-100/80 text-xl mb-12 font-light max-w-lg">
+                            Adjust the slider to see how much your idle land could generate. Based on average solar performance in India.
                         </p>
 
                         <div className="space-y-6">
-                            <div className="flex items-center gap-4">
-                                <CheckCircle className="text-green-300" /> <span>Guaranteed Fixed Rent (Inflation Adjusted)</span>
+                            <div className="flex items-center gap-4 group">
+                                <div className="w-10 h-10 rounded-full bg-green-400/20 flex items-center justify-center group-hover:bg-green-400/40 transition">
+                                    <CheckCircle className="text-green-300" />
+                                </div>
+                                <span className="font-medium text-lg">Guaranteed Fixed Rent (Inflation Adjusted)</span>
                             </div>
-                            <div className="flex items-center gap-4">
-                                <CheckCircle className="text-green-300" /> <span>10-15% Revenue Share from Electricity</span>
+                            <div className="flex items-center gap-4 group">
+                                <div className="w-10 h-10 rounded-full bg-green-400/20 flex items-center justify-center group-hover:bg-green-400/40 transition">
+                                    <CheckCircle className="text-green-300" />
+                                </div>
+                                <span className="font-medium text-lg">10-15% Revenue Share from Electricity</span>
                             </div>
-                            <div className="flex items-center gap-4">
-                                <CheckCircle className="text-green-300" /> <span>0 Maintenance Cost for You</span>
+                            <div className="flex items-center gap-4 group">
+                                <div className="w-10 h-10 rounded-full bg-green-400/20 flex items-center justify-center group-hover:bg-green-400/40 transition">
+                                    <CheckCircle className="text-green-300" />
+                                </div>
+                                <span className="font-medium text-lg">0 Maintenance Cost for You</span>
                             </div>
                         </div>
                     </div>
 
-                    <div ref={calculatorRef} className="bg-white text-gray-900 p-8 rounded-3xl shadow-2xl">
-                        <div className="flex justify-between items-center mb-8">
-                            <span className="font-bold text-gray-500">LAND SIZE</span>
-                            <span className="text-3xl font-bold text-land-primary font-display lining-nums">{acres} Acres</span>
-                        </div>
+                    <div ref={calculatorRef} className="relative">
+                        {/* Card Glow Effect */}
+                        <div className="absolute -inset-4 bg-gradient-to-r from-green-400 to-yellow-100 rounded-[2.5rem] blur-xl opacity-30 animate-pulse"></div>
 
-                        <input
-                            type="range"
-                            min="1"
-                            max="50"
-                            value={acres}
-                            onChange={(e) => setAcres(parseInt(e.target.value))}
-                            className="w-full h-3 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-land-primary mb-12"
-                        />
-
-                        <div className="grid grid-cols-2 gap-4 mb-8">
-                            <div className="bg-gray-50 p-4 rounded-xl text-center">
-                                <div className="text-sm text-gray-500 font-bold uppercase mb-1">Fixed Rent</div>
-                                <div className="text-xl font-bold font-display lining-nums">₹ {(acres * baseRate).toLocaleString()}</div>
+                        <div className="bg-white/10 backdrop-blur-xl border border-white/20 p-8 md:p-10 rounded-[2rem] shadow-2xl relative">
+                            <div className="flex justify-between items-center mb-8">
+                                <span className="font-bold text-green-100 tracking-wider text-sm">LAND SIZE</span>
+                                <div className="flex items-baseline gap-2">
+                                    <span className="text-5xl font-bold text-white font-display lining-nums">{acres}</span>
+                                    <span className="text-xl font-medium text-green-200">Acres</span>
+                                </div>
                             </div>
-                            <div className="bg-gray-50 p-4 rounded-xl text-center">
-                                <div className="text-sm text-gray-500 font-bold uppercase mb-1">Rev. Share</div>
-                                <div className="text-xl font-bold font-display lining-nums">~ ₹ {(acres * revenueShare).toLocaleString()}</div>
+
+                            <div className="mb-12 relative">
+                                <input
+                                    type="range"
+                                    min="1"
+                                    max="50"
+                                    value={acres}
+                                    onChange={(e) => setAcres(parseInt(e.target.value))}
+                                    className="w-full h-4 bg-green-900/40 rounded-full appearance-none cursor-pointer [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-8 [&::-webkit-slider-thumb]:h-8 [&::-webkit-slider-thumb]:bg-white [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:shadow-[0_0_20px_rgba(255,255,255,0.5)] [&::-webkit-slider-thumb]:transition-transform [&::-webkit-slider-thumb]:hover:scale-110"
+                                />
+                                <div className="flex justify-between text-xs font-bold text-green-400/60 mt-2 px-1">
+                                    <span>1 Acre</span>
+                                    <span>50 Acres</span>
+                                </div>
+                            </div>
+
+                            <div className="grid grid-cols-2 gap-4 mb-8">
+                                <div className="bg-green-900/30 p-4 rounded-2xl text-center border border-white/5 hover:bg-green-900/50 transition">
+                                    <div className="text-xs text-green-300 font-bold uppercase mb-1 tracking-wider">Fixed Rent</div>
+                                    <div className="text-xl font-bold font-display lining-nums">₹ {(acres * baseRate).toLocaleString()}</div>
+                                </div>
+                                <div className="bg-green-900/30 p-4 rounded-2xl text-center border border-white/5 hover:bg-green-900/50 transition">
+                                    <div className="text-xs text-green-300 font-bold uppercase mb-1 tracking-wider">Rev. Share</div>
+                                    <div className="text-xl font-bold font-display lining-nums">~ ₹ {(acres * revenueShare).toLocaleString()}</div>
+                                </div>
+                            </div>
+
+                            <div className="bg-white p-6 rounded-2xl text-center shadow-lg transform transition-transform hover:scale-[1.02]">
+                                <div className="text-gray-500 font-bold text-xs uppercase tracking-widest mb-2">Total Estimated Income</div>
+                                <div className="text-5xl md:text-6xl font-black text-transparent bg-clip-text bg-gradient-to-r from-land-primary to-green-600 font-display lining-nums">
+                                    ₹ {formattedEarnings}
+                                </div>
+                                <div className="text-xs text-gray-400 font-medium mt-3 bg-gray-50 inline-block px-3 py-1 rounded-full">
+                                    *Per Annum (Approx)
+                                </div>
                             </div>
                         </div>
-
-                        <div className="bg-land-bg p-6 rounded-2xl text-center border border-green-200">
-                            <div className="text-gray-600 font-medium mb-2">Total Estimated Annual Income</div>
-                            <div className="text-5xl font-bold text-land-primary font-display lining-nums">₹ {formattedEarnings}</div>
-                            <div className="text-sm text-gray-500 mt-2">*Indicative figures only</div>
-                        </div>
-
-                        <button onClick={() => navigate('/land-owner/submit')} className="w-full mt-8 py-4 bg-gray-900 text-white font-bold rounded-xl hover:bg-black transition">
-                            Unlock This Income Now
-                        </button>
                     </div>
                 </div>
             </div>
 
             {/* ================= FOOTER CTA ================= */}
             <div className="py-24 text-center">
-                <h2 className="text-3xl font-bold mb-8">Ready to transform your land?</h2>
+                <h2 className="text-3xl font-bold font-display mb-8">Ready to transform your land?</h2>
                 <button onClick={() => navigate('/land-owner/submit')} className="px-10 py-4 bg-land-primary text-white text-lg font-bold rounded-full shadow-lg hover:shadow-2xl hover:-translate-y-1 transition">
                     Start Your Application
                 </button>

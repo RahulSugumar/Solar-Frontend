@@ -14,6 +14,7 @@ export default {
                     bg1: '#c4d8cfff',      // Soft Cream
                     text: '#2D3748',
                     bg: '#dbede5ff',
+                    bgcalc: '#022d19e0',
                 },
                 // Investor Theme (Solar/Gold)
                 invest: {
