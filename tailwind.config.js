@@ -11,8 +11,9 @@ export default {
                 land: {
                     primary: '#2F855A', // Deep Forest Green
                     light: '#48BB78',
-                    bg: '#F9F5F0',      // Soft Cream
+                    bg1: '#c4d8cfff',      // Soft Cream
                     text: '#2D3748',
+                    bg: '#dbede5ff',
                 },
                 // Investor Theme (Solar/Gold)
                 invest: {
@@ -34,6 +35,17 @@ export default {
             },
             fontFamily: {
                 sans: ['Inter', 'sans-serif'],
+                display: ['"Playfair Display"', 'serif'],
+            },
+            keyframes: {
+                scan: {
+                    '0%': { top: '0%' },
+                    '100%': { top: '100%' },
+                },
+                growth: {
+                    '0%': { height: '20%' },
+                    '100%': { height: '100%' },
+                }
             }
         },
     },
