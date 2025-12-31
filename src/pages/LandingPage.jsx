@@ -1,7 +1,7 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import gsap from 'gsap';
-import { Trees, Zap, ArrowRight, ShieldCheck, Banknote, Sun, Clock, TrendingUp, Cloud, Leaf, Coins, BarChart, Bird, Hexagon } from 'lucide-react';
+import { Trees, Zap, ArrowRight, ShieldCheck, Banknote, Sun, Clock, TrendingUp, Cloud, Leaf, Coins, BarChart, Bird, Hexagon, PieChart, DollarSign, Activity } from 'lucide-react';
 
 const LandingPage = () => {
     const navigate = useNavigate();
@@ -207,10 +207,15 @@ const LandingPage = () => {
                     <BarChart className="chart-bar-anim absolute top-1/3 right-1/4 w-20 h-20 text-invest-primary" />
                     <Sun className="sun-anim absolute bottom-20 right-20 w-32 h-32 text-orange-400 opacity-50" />
 
-
+                    <PieChart className="absolute top-12 left-12 w-20 h-20 text-invest-primary opacity-60" />
+                    <DollarSign className="absolute top-80 left-8 w-20 h-20 text-invest-primary opacity-100" />
+                    <Activity className="absolute top-8 left-32 w-12 h-12 text-invest-primary opacity-60" />
                     {/* Random Geometric Shapes */}
                     <div className="chart-bar-anim absolute top-1/2 right-10 w-6 h-6 rotate-45 bg-invest-primary"></div>
                     <div className="chart-bar-anim absolute bottom-10 left-1/3 w-4 h-4 rounded-sm bg-invest-primary"></div>
+
+                    {/* New Top-Left Icons */}
+
                 </div>
 
                 <div ref={rightContentRef} className="z-10 text-center p-8 max-w-2xl transition-all relative">

@@ -27,7 +27,6 @@ const LandOwnerWelcome = () => {
             { y: 50, opacity: 0 },
             { y: 0, opacity: 1, duration: 0.8, stagger: 0.2, ease: "power3.out" }
         );
-
         // Scroll Triggers for Sections
         // Scroll Triggers for Timeline
         const tlSteps = gsap.timeline({
@@ -416,7 +415,7 @@ const LandOwnerWelcome = () => {
                 <div className="absolute top-20 right-20 animate-bounce delay-700 opacity-20">
                     <Banknote size={64} className="text-green-300" />
                 </div>
-                <div className="absolute bottom-20 left-20 animate-bounce delay-100 opacity-10">
+                <div className="absolute bottom-20 left-20 animate-[spin_20s_linear_infinite]  opacity-10">
                     <Sun size={80} className="text-yellow-300" />
                 </div>
 

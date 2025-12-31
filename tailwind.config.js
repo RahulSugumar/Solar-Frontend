@@ -19,10 +19,12 @@ export default {
                 // Investor Theme (Solar/Gold)
                 invest: {
                     primary: '#D69E2E', // Solar Amber
-                    light: '#ECC94B',
+                    light: '#e7dec0ff',
                     bg: '#FFFFFF',      // Crisp White
                     text: '#1A202C',
                     accent: '#ffffff',
+                    card: '#514f45ff',
+                    bgtimeline: '#dcd3b5ff',
                 },
                 // Common
                 dark: '#1A202C',
@@ -46,6 +48,48 @@ export default {
                 growth: {
                     '0%': { height: '20%' },
                     '100%': { height: '100%' },
+                },
+                slide: {
+                    '0%': { transform: 'translateX(-100%)' },
+                    '100%': { transform: 'translateX(200%)' },
+                },
+                translateY: {
+                    '0%': { transform: 'translateY(10%)' },
+                    '100%': { transform: 'translateY(-10%)' },
+                },
+                flight: {
+                    '0%': { transform: 'translate(0, 0)', opacity: 1 },
+                    '100%': { transform: 'translate(50px, -50px)', opacity: 0 },
+                },
+                notificationSlide: {
+                    '0%': { opacity: 0, transform: 'translateY(-10px)' },
+                    '20%': { opacity: 1, transform: 'translateY(0)' },
+                    '80%': { opacity: 1, transform: 'translateY(0)' },
+                    '100%': { opacity: 0, transform: 'translateY(10px)' },
+                },
+                scaleIn: {
+                    '0%': { transform: 'scale(0)' },
+                    '100%': { transform: 'scale(1)' },
+                },
+                fadeIn: {
+                    '0%': { opacity: 0 },
+                    '100%': { opacity: 1 },
+                },
+                fadeBack: {
+                    '0%': { opacity: 0.6, transform: 'scale(0.9)' },
+                    '100%': { opacity: 0.3, transform: 'scale(0.8)' },
+                },
+                float: {
+                    '0%, 100%': { transform: 'translateY(0)' },
+                    '50%': { transform: 'translateY(-20px)' },
+                },
+                shimmer: {
+                    '0%': { backgroundPosition: '200% 0' },
+                    '100%': { backgroundPosition: '-200% 0' },
+                },
+                countUp: {
+                    '0%': { opacity: 0, transform: 'translateY(10px) scale(0.9)' },
+                    '100%': { opacity: 1, transform: 'translateY(0) scale(1)' },
                 }
             }
         },
