@@ -3,7 +3,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { CheckCircle, ArrowRight, TrendingUp, ShieldCheck, Sun, DollarSign, BarChart3, PieChart, Coins, Zap } from 'lucide-react';
+import { CheckCircle, ArrowRight, TrendingUp, ShieldCheck, Sun, DollarSign, BarChart3, PieChart, Coins, Zap, Banknote } from 'lucide-react';
 import InvestorsImg from "../assets/Investors.webp";
 gsap.registerPlugin(ScrollTrigger);
 
@@ -492,6 +492,12 @@ const InvestorWelcome = () => {
                 {/* Decorative Background */}
                 <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-invest-primary/10 rounded-full blur-[100px] pointer-events-none"></div>
                 <div className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-blue-900/20 rounded-full blur-[100px] pointer-events-none"></div>
+                <div className="absolute top-20 right-20 animate-bounce delay-700 opacity-20">
+                    <Banknote size={64} className="text-orange-300" />
+                </div>
+                <div className="absolute bottom-20 left-20 animate-[spin_20s_linear_infinite]  opacity-10">
+                    <Sun size={80} className="text-yellow-300" />
+                </div>
 
                 <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-2 gap-16 items-center relative z-10">
                     <div>
