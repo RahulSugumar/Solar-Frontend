@@ -71,7 +71,7 @@ const InvestorWelcome = () => {
 
         // Continuous Animations
         gsap.to(".step-icon-1", { y: -10, duration: 2, repeat: -1, yoyo: true, ease: "sine.inOut" });
-        gsap.to(".step-icon-2", { scale: 2, duration: 1, repeat: -1, yoyo: true, ease: "sine.inOut" });
+        gsap.to(".step-icon-2", { scale: 1.3, duration: 1, repeat: -1, yoyo: true, ease: "sine.inOut" });
         gsap.to(".step-icon-3", { rotation: 360, duration: 15, repeat: -1, yoyo: true, ease: "sine.inOut" });
         gsap.to(".step-icon-4", { y: -5, duration: 1, repeat: -1, yoyo: true, ease: "sine.inOut" });
 
@@ -110,8 +110,8 @@ const InvestorWelcome = () => {
                     </div>
 
                     <div className="flex gap-4 z-10">
-                        <button onClick={() => navigate('/login')} className="px-6 py-2.5 text-gray-600 font-bold hover:text-invest-primary transition">Log In</button>
-                        <button onClick={() => navigate('/register')} className="px-6 py-2.5 bg-gray-900 text-white font-bold rounded-full hover:bg-black hover:scale-105 transition shadow-lg flex items-center gap-2">
+                        <button onClick={() => navigate('/investor/auth')} className="px-6 py-2.5 text-gray-600 font-bold hover:text-invest-primary transition">Log In</button>
+                        <button onClick={() => navigate('/investor/auth')} className="px-6 py-2.5 bg-gray-900 text-white font-bold rounded-full hover:bg-black hover:scale-105 transition shadow-lg flex items-center gap-2">
                             Start Investing
                         </button>
                     </div>
@@ -364,39 +364,51 @@ const InvestorWelcome = () => {
                                         </div>
                                     )}
 
-                                    {/* Scene 3: Energy Flow (Premium Solar Array) */}
+                                    {/* Scene 3: Energy Flow (Decorative Solar Harmony) */}
                                     {i === 2 && (
-                                        <div className="relative w-80 h-56 flex items-center justify-center perspective-[800px] overflow-hidden">
+                                        <div className="relative w-80 h-64 flex items-center justify-center overflow-hidden">
 
-                                            {/* Sun Source with Rays */}
-                                            <div className="absolute -top-10 -right-10 z-0">
-                                                <Sun className="text-orange-400 w-24 h-24 animate-[spin_30s_linear_infinite] opacity-40 blur-sm" />
-                                                <div className="absolute inset-0 bg-orange-400 rounded-full blur-2xl opacity-20 animate-pulse"></div>
+                                            {/* 1. Soft Background Sun */}
+                                            <div className="absolute top-0 right-10">
+                                                <Sun size={120} className="text-orange-300/40 animate-[spin_60s_linear_infinite] blur-sm" strokeWidth={1} />
+                                                <div className="absolute inset-0 bg-orange-400/20 rounded-full blur-3xl animate-pulse"></div>
                                             </div>
 
-                                            {/* 3D Solar Array Grid */}
-                                            <div className="relative z-10 transform rotate-x-12 rotate-y-12 rotate-z-[-5deg] scale-90">
-                                                <div className="grid grid-cols-2 gap-2 w-48 bg-gray-700 p-2 rounded-lg border-b-4 border-r-4 border-gray-800 shadow-2xl relative overflow-hidden group">
-
-                                                    {/* Panels */}
-                                                    {[...Array(4)].map((_, idx) => (
-                                                        <div key={idx} className="h-12 bg-gradient-to-br from-blue-400 to-blue-500 rounded border border-blue-400/30 relative overflow-hidden">
-
-                                                        </div>
+                                            {/* 2. Glassmorphism Solar Panel (Floating) */}
+                                            <div className="relative z-10 w-48 h-32 bg-gradient-to-br from-white/40 to-white/10 backdrop-blur-md rounded-2xl border border-white/40 shadow-2xl flex items-center justify-center transform -rotate-6 hover:rotate-0 transition-transform duration-700 group">
+                                                {/* Panel Grids (Subtle) */}
+                                                <div className="grid grid-cols-3 gap-1 w-full h-full p-2 opacity-80">
+                                                    {[...Array(6)].map((_, idx) => (
+                                                        <div key={idx} className="bg-blue-400 rounded-lg"></div>
                                                     ))}
+                                                </div>
 
-                                                    {/* Panel Reflection Glare */}
-                                                    <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/5 to-transparent pointer-events-none"></div>
+                                                {/* Reflection */}
+                                                <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/30 to-transparent rounded-2xl pointer-events-none"></div>
+
+                                                {/* Center Glow Pulse */}
+
+
+                                                {/* Icon */}
+                                                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white/30 p-3 rounded-full shadow-lg border border-white/50 backdrop-blur-xl">
+                                                    <Zap size={24} className="text-yellow-300 fill-current animate-bounce" />
                                                 </div>
                                             </div>
 
-                                            {/* Energy Transmission Line */}
-                                            <div className="absolute bottom-0 left-0 w-full h-24 flex items-end px-10 pb-4 z-20 pointer-events-none">
-                                                <div className="w-full h-1 bg-gradient-to-r from-blue-500/50 to-yellow-400/50 rounded-full relative">
-                                                    {/* Moving Energy Orbs */}
-                                                    <div className="absolute top-1/2 -translate-y-1/2 left-0 w-2 h-2 bg-yellow-300 rounded-full shadow-[0_0_10px_orange] animate-[slide_3s_linear_infinite]"></div>
-                                                    <div className="absolute top-1/2 -translate-y-1/2 left-0 w-3 h-1 bg-white rounded-full blur-[1px] animate-[slide_3s_linear_infinite_1.4s]"></div>
-                                                </div>
+                                            {/* 3. Rising Energy Orbs (The 'Harmony' Effect) */}
+                                            <div className="absolute inset-0 pointer-events-none">
+                                                {[...Array(5)].map((_, j) => (
+                                                    <div
+                                                        key={j}
+                                                        className="absolute w-4 h-4 bg-yellow-300/60 rounded-full blur-[2px] shadow-[0_0_10px_rgba(253,224,71,0.5)]"
+                                                        style={{
+                                                            bottom: '20%',
+                                                            left: `${20 + Math.random() * 60}%`,
+                                                            animation: `rise ${3 + Math.random() * 2}s ease-in-out infinite`,
+                                                            animationDelay: `${Math.random() * 2}s`
+                                                        }}
+                                                    ></div>
+                                                ))}
                                             </div>
 
                                             {/* Grid/City Destination */}
@@ -576,13 +588,13 @@ const InvestorWelcome = () => {
             {/* ================= FOOTER CTA ================= */}
             <div className="py-24 text-center bg-white text-gray-900">
                 <h2 className="text-4xl font-bold font-display mb-8">Ready to grow your wealth?</h2>
-                <button onClick={() => navigate('/register')} className="px-12 py-5 bg-invest-primary text-white text-xl font-bold rounded-full shadow-xl shadow-yellow-200 hover:shadow-2xl hover:-translate-y-1 transition">
+                <button onClick={() => navigate('/investor/auth')} className="px-12 py-5 bg-invest-primary text-white text-xl font-bold rounded-full shadow-xl shadow-yellow-200 hover:shadow-2xl hover:-translate-y-1 transition">
                     Start Investing Now
                 </button>
             </div>
 
+
         </div >
     );
 };
-
 export default InvestorWelcome;

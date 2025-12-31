@@ -90,6 +90,11 @@ export default {
                 countUp: {
                     '0%': { opacity: 0, transform: 'translateY(10px) scale(0.9)' },
                     '100%': { opacity: 1, transform: 'translateY(0) scale(1)' },
+                },
+                rise: {
+                    '0%': { opacity: 0, transform: 'translateY(20px) scale(0.5)' },
+                    '40%': { opacity: 1 },
+                    '100%': { opacity: 0, transform: 'translateY(-60px) scale(1.2)' },
                 }
             }
         },
