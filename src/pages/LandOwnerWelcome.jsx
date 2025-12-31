@@ -125,8 +125,8 @@ const LandOwnerWelcome = () => {
                     </div>
 
                     <div className="flex gap-4 z-10">
-                        <button onClick={() => navigate('/login')} className="px-6 py-2.5 text-gray-600 font-bold hover:text-land-primary transition">Log In</button>
-                        <button onClick={() => navigate('/register')} className="px-6 py-2.5 bg-gray-900 text-white font-bold rounded-full hover:bg-black hover:scale-105 transition shadow-lg flex items-center gap-2">
+                        <button onClick={() => navigate('/land-owner/auth')} className="px-6 py-2.5 text-gray-600 font-bold hover:text-land-primary transition">Log In</button>
+                        <button onClick={() => navigate('/land-owner/auth')} className="px-6 py-2.5 bg-gray-900 text-white font-bold rounded-full hover:bg-black hover:scale-105 transition shadow-lg flex items-center gap-2">
                             Get Started
                         </button>
                     </div>
@@ -154,7 +154,7 @@ const LandOwnerWelcome = () => {
                             Zero Investment. We lease your land, install solar panels, and pay you guaranteed monthly rent plus a share of the revenue.
                         </p>
                         <div className="flex flex-col sm:flex-row gap-4">
-                            <button onClick={() => navigate('/land-owner/submit')} className="px-8 py-4 bg-land-primary text-white text-lg font-bold rounded-xl shadow-xl shadow-green-200 hover:shadow-2xl hover:bg-green-700 transition flex items-center justify-center gap-2">
+                            <button onClick={() => navigate('/land-owner/auth')} className="px-8 py-4 bg-land-primary text-white text-lg font-bold rounded-xl shadow-xl shadow-green-200 hover:shadow-2xl hover:bg-green-700 transition flex items-center justify-center gap-2">
                                 Check Eligibility  <ArrowRight size={20} />
                             </button>
                             <button className="px-8 py-4 bg-white text-gray-700 border border-gray-200 text-lg font-bold rounded-xl hover:bg-gray-50 transition flex items-center justify-center gap-2">
@@ -509,7 +509,7 @@ const LandOwnerWelcome = () => {
             {/* ================= FOOTER CTA ================= */}
             <div className="py-24 text-center">
                 <h2 className="text-3xl font-bold font-display mb-8">Ready to transform your land?</h2>
-                <button onClick={() => navigate('/land-owner/submit')} className="px-10 py-4 bg-land-primary text-white text-lg font-bold rounded-full shadow-lg hover:shadow-2xl hover:-translate-y-1 transition">
+                <button onClick={() => navigate('/land-owner/auth')} className="px-10 py-4 bg-land-primary text-white text-lg font-bold rounded-full shadow-lg hover:shadow-2xl hover:-translate-y-1 transition">
                     Start Your Application
                 </button>
             </div>

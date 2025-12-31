@@ -131,13 +131,18 @@ const LandingPage = () => {
                 <div className="w-3 h-3 rounded-full bg-invest-primary"></div>
             </div>
 
+            {/* NEUTRAL CENTER ZONE - Blocks hover interactions in the middle */}
+            <div
+                className="absolute left-1/2 top-0 bottom-0 w-[10%] -translate-x-1/2 z-40 bg-transparent"
+                onMouseEnter={handleReset}
+            ></div>
+
             {/* ================= LEFT SIDE: LAND OWNER ================= */}
             <div
                 ref={leftSideRef}
-                className="relative h-full bg-land-bg text-land-primary flex flex-col justify-center items-center cursor-pointer border-r border-gray-200 overflow-hidden"
+                className="relative h-full bg-land-bg text-land-primary flex flex-col justify-center items-center cursor-default border-r border-gray-200 overflow-hidden"
                 onMouseEnter={handleHoverLeft}
                 onMouseLeave={handleReset}
-                onClick={() => handleNavigate('left')}
                 style={{ width: '50%' }}
             >
                 {/* Background Gradients */}
@@ -182,7 +187,10 @@ const LandingPage = () => {
                         </div>
                     </div>
 
-                    <button className="group px-10 py-4 bg-land-primary text-white text-lg font-bold rounded-full flex items-center gap-3 mx-auto shadow-lg hover:shadow-xl hover:bg-land-primary/90 transition-all transform hover:-translate-y-1">
+                    <button
+                        onClick={(e) => { e.stopPropagation(); handleNavigate('left'); }}
+                        className="group px-10 py-4 bg-land-primary text-white text-lg font-bold rounded-full flex items-center gap-3 mx-auto shadow-lg hover:shadow-xl hover:bg-land-primary/90 transition-all transform hover:-translate-y-1 relative z-20"
+                    >
                         Submit My Land <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
                     </button>
                 </div>
@@ -191,10 +199,9 @@ const LandingPage = () => {
             {/* ================= RIGHT SIDE: INVESTOR ================= */}
             <div
                 ref={rightSideRef}
-                className="relative h-full bg-white text-invest-primary flex flex-col justify-center items-center cursor-pointer overflow-hidden"
+                className="relative h-full bg-white text-invest-primary flex flex-col justify-center items-center cursor-default overflow-hidden"
                 onMouseEnter={handleHoverRight}
                 onMouseLeave={handleReset}
-                onClick={() => handleNavigate('right')}
                 style={{ width: '50%' }}
             >
                 {/* Background Gradients */}
@@ -223,7 +230,7 @@ const LandingPage = () => {
                         <Zap size={64} className="text-invest-primary" strokeWidth={1.5} />
                     </div>
 
-                    <h2 className="text-sm font-bold tracking-widest text-invest-light uppercase mb-2">For Investors</h2>
+                    <h2 className="text-sm font-bold tracking-widest text-invest-primary uppercase mb-2">For Investors</h2>
                     <h1 className="text-5xl md:text-6xl font-bold mb-6 leading-tight text-gray-900">
                         Power Future, <br />
                         <span className="text-invest-primary">Grow Wealth.</span>
@@ -244,7 +251,10 @@ const LandingPage = () => {
                         </div>
                     </div>
 
-                    <button className="group px-10 py-4 bg-invest-primary text-white text-lg font-bold rounded-full flex items-center gap-3 mx-auto shadow-lg shadow-invest-primary/30 hover:shadow-xl hover:bg-invest-primary/90 transition-all transform hover:-translate-y-1">
+                    <button
+                        onClick={(e) => { e.stopPropagation(); handleNavigate('right'); }}
+                        className="group px-10 py-4 bg-invest-primary text-white text-lg font-bold rounded-full flex items-center gap-3 mx-auto shadow-lg shadow-invest-primary/30 hover:shadow-xl hover:bg-invest-primary/90 transition-all transform hover:-translate-y-1 relative z-20"
+                    >
                         Start Investing <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
                     </button>
                 </div>

@@ -268,7 +268,7 @@ const InvestorWelcome = () => {
                                         <div className="text-sm font-bold tracking-[0.2em] uppercase text-gray-500 font-display">{step.subtitle}</div>
                                     </div>
 
-                                    <h4 className="text-4xl font-bold text-gray-900 mb-6 leading-tight font-display">
+                                    <h4 className="text-4xl font-bold text-gray-900 mb-6 leading-tight font-display lining-nums">
                                         {step.title}
                                     </h4>
 

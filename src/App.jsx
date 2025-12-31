@@ -4,6 +4,7 @@ import { useState } from 'react';
 import LandingPage from './pages/LandingPage';
 import LandOwnerWelcome from './pages/LandOwnerWelcome';
 import InvestorWelcome from './pages/InvestorWelcome';
+import LandOwnerAuth from './pages/LandOwnerAuth';
 
 // Placeholders for Dashboard/Auth
 const LoginPlaceholder = () => <div className="p-10 text-center">Login Page</div>;
@@ -25,6 +26,7 @@ function App() {
           <Route path="/register" element={<RegisterPlaceholder />} />
 
           {/* Private Routes (We will add protection later) */}
+          <Route path="/land-owner/auth" element={<LandOwnerAuth />} />
           <Route path="/land-owner/*" element={<LandOwnerDashboard />} />
           <Route path="/investor/*" element={<InvestorDashboard />} />
 
