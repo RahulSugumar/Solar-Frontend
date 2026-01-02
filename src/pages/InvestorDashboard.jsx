@@ -84,6 +84,30 @@ const InvestorDashboard = () => {
         }
     };
 
+    const handlePayNow = async (investmentId, amount) => {
+        if (!window.confirm(`Confirm payment of ₹${amount.toLocaleString()} from your wallet?`)) return;
+
+        setProcessing(true);
+        try {
+            const res = await api.post(`/invest/pay-now/${investmentId}`);
+            setWalletBalance(res.data.balance);
+            alert("Payment Successful! You are now an active investor in this project.");
+
+            // Refresh Data
+            const portfolioRes = await api.get('/invest/my-investments');
+            setMyInvestments(portfolioRes.data);
+            // Also refresh market data as land status changes to active (might disappear or stay if we change logic, but good practice)
+            const marketRes = await api.get('/invest/available-lands');
+            setMarketLands(marketRes.data);
+
+        } catch (error) {
+            console.error("Payment Error", error);
+            alert(error.response?.data?.detail || "Payment Failed");
+        } finally {
+            setProcessing(false);
+        }
+    };
+
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -217,7 +241,7 @@ const InvestorDashboard = () => {
                 <div className="animate-fade-in-up" style={{ animationDelay: '0.1s' }}>
                     {activeTab === 'overview' && <OverviewSection marketLands={marketLands} myInvestments={myInvestments} walletBalance={walletBalance} onInvest={(land) => { setSelectedLand(land); setShowInvestModal(true); }} />}
                     {activeTab === 'marketplace' && <MarketplaceSection lands={marketLands} onInvest={(land) => { setSelectedLand(land); setShowInvestModal(true); }} />}
-                    {activeTab === 'portfolio' && <PortfolioSection investments={myInvestments} />}
+                    {activeTab === 'portfolio' && <PortfolioSection investments={myInvestments} onPayNow={handlePayNow} />}
                     {activeTab === 'wallet' && <WalletSection balance={walletBalance} onAdd={() => setShowAddModal(true)} onWithdraw={() => setShowWithdrawModal(true)} />}
                 </div>
 
@@ -358,7 +382,10 @@ const StatCard = ({ icon, label, value, trend }) => (
 );
 
 const OverviewSection = ({ marketLands, myInvestments, walletBalance, onInvest }) => {
-    const totalInvested = myInvestments.reduce((sum, inv) => sum + (inv.amount || 0), 0);
+    // Only count investments that are fully paid/active
+    const totalInvested = myInvestments.reduce((sum, inv) => {
+        return (inv.status === 'active' || inv.status === 'completed') ? sum + (inv.amount || 0) : sum;
+    }, 0);
     const totalEarnings = totalInvested * 0.142; // Mock ROI logic for now
 
     return (
@@ -444,7 +471,7 @@ const MarketplaceSection = ({ lands, onInvest }) => (
     </div>
 );
 
-const PortfolioSection = ({ investments }) => (
+const PortfolioSection = ({ investments, onPayNow }) => (
     <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
         <table className="w-full text-left text-sm">
             <thead className="bg-gray-50 text-gray-500 uppercase tracking-wider font-bold text-xs">
@@ -454,27 +481,40 @@ const PortfolioSection = ({ investments }) => (
                     <th className="px-6 py-4">Amount</th>
                     <th className="px-6 py-4">Current Value</th>
                     <th className="px-6 py-4">Status</th>
+                    <th className="px-6 py-4">Action</th>
                 </tr>
             </thead>
             <tbody className="divide-y divide-gray-100">
                 {investments.length === 0 ? (
-                    <tr><td colSpan="5" className="px-6 py-12 text-center text-gray-400 font-medium">No investments yet. Start exploring the marketplace!</td></tr>
+                    <tr><td colSpan="6" className="px-6 py-12 text-center text-gray-400 font-medium">No investments yet. Start exploring the marketplace!</td></tr>
                 ) : investments.map(inv => (
                     <tr key={inv.id} className="hover:bg-gray-50 transition">
                         <td className="px-6 py-4 font-bold text-gray-900">Solar Farm #{inv.land_id}</td>
                         <td className="px-6 py-4 text-gray-500">{new Date(inv.created_at || Date.now()).toLocaleDateString()}</td>
                         <td className="px-6 py-4 font-medium">₹ {inv.amount.toLocaleString()}</td>
                         <td className="px-6 py-4 font-medium text-invest-primary">
-                            {inv.status === 'pending_approval' ? '-' : `₹ ${(inv.amount * 1.05).toFixed(0)}`}
+                            {inv.status === 'pending_approval' || inv.status === 'payment_pending' ? '-' : `₹ ${(inv.amount * 1.05).toFixed(0)}`}
                         </td>
                         <td className="px-6 py-4">
                             <span className={`px-2 py-1 rounded-md text-xs font-bold uppercase ${inv.status === 'pending_approval' ? 'bg-yellow-100 text-yellow-700' :
-                                inv.status === 'completed' || inv.status === 'active' ? 'bg-green-100 text-green-700' :
-                                    'bg-gray-100 text-gray-600'
+                                    inv.status === 'payment_pending' ? 'bg-blue-100 text-blue-700' :
+                                        inv.status === 'completed' || inv.status === 'active' ? 'bg-green-100 text-green-700' :
+                                            'bg-gray-100 text-gray-600'
                                 }`}>
                                 {inv.status === 'pending_approval' ? 'Reserved' :
-                                    inv.status === 'completed' ? 'Active' : inv.status}
+                                    inv.status === 'payment_pending' ? 'Payment Due' :
+                                        inv.status === 'completed' ? 'Active' : inv.status}
                             </span>
+                        </td>
+                        <td className="px-6 py-4">
+                            {inv.status === 'payment_pending' && (
+                                <button
+                                    onClick={() => onPayNow(inv.id, inv.amount)}
+                                    className="px-3 py-1 bg-invest-primary text-white text-xs font-bold rounded-lg shadow-md hover:bg-yellow-600 transition"
+                                >
+                                    Pay Now
+                                </button>
+                            )}
                         </td>
                     </tr>
                 ))}

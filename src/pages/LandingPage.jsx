@@ -260,6 +260,21 @@ const LandingPage = () => {
                 </div>
             </div>
 
+            {/* Admin Link (Protected - Professional Corner Placement) */}
+            <button
+                onClick={(e) => {
+                    e.stopPropagation();
+                    const pass = prompt("Enter Admin Access Code:");
+                    if (pass === "solar123") {
+                        navigate('/admin');
+                    } else if (pass) {
+                        alert("Access Denied");
+                    }
+                }}
+                className="absolute bottom-6 right-6 z-50 p-1 text-[10px] border-none font-bold text-gray-400/40 hover:text-invest-primary transition-all uppercase tracking-widest"
+            >
+                Admin Portal
+            </button>
         </div>
     );
 };

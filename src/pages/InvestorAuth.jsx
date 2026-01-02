@@ -44,7 +44,8 @@ const InvestorAuth = () => {
                 }
 
                 console.log("Login Success:", response.data);
-                navigate('/investor/dashboard'); // Redirect to Investor Dashboard
+                console.log("Login Success:", response.data);
+                navigate('/investor/dashboard', { replace: true }); // Redirect to Investor Dashboard
 
             } else {
                 // Sign Up Logic
@@ -294,6 +295,15 @@ const InvestorAuth = () => {
                                 {isLogin ? "create an account" : "login here"}
                             </button>
                         </p>
+                    </div>
+
+                    <div className="mt-8 text-center bg-white/50 backdrop-blur-sm p-4 rounded-xl border border-white/40 shadow-sm max-w-sm mx-auto">
+                        <button
+                            onClick={() => navigate('/', { replace: true })}
+                            className="text-sm font-bold text-gray-500 hover:text-invest-primary hover:underline flex items-center justify-center gap-2 mx-auto transition-colors"
+                        >
+                            <ArrowLeft size={16} /> Return to Homepage
+                        </button>
                     </div>
                 </div>
             </div>

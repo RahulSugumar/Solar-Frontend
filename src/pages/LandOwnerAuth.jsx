@@ -46,7 +46,8 @@ const LandOwnerAuth = () => {
                 }
 
                 console.log("Login Success:", response.data);
-                navigate('/land-owner/dashboard'); // Redirect after login
+                console.log("Login Success:", response.data);
+                navigate('/land-owner/dashboard', { replace: true }); // Redirect after login
 
             } else {
                 // Sign Up Logic - Correct endpoint is /register
@@ -292,6 +293,15 @@ const LandOwnerAuth = () => {
                                 {isLogin ? "Sign Up" : "Sign In"}
                             </button>
                         </p>
+                    </div>
+
+                    <div className="mt-8 text-center bg-white/50 backdrop-blur-sm p-4 rounded-xl border border-white/40 shadow-sm max-w-sm mx-auto">
+                        <button
+                            onClick={() => navigate('/', { replace: true })}
+                            className="text-sm font-bold text-land-primary hover:text-land-dark hover:underline flex items-center justify-center gap-2 mx-auto transition-colors"
+                        >
+                            <ArrowLeft size={16} /> Return to Homepage
+                        </button>
                     </div>
                 </div>
             </div>

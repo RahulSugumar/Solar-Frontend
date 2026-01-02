@@ -9,6 +9,8 @@ import InvestorAuth from './pages/InvestorAuth';
 import LandOwnerDashboard from './pages/LandOwnerDashboard';
 import LandSubmission from './pages/LandSubmission';
 import InvestorDashboard from './pages/InvestorDashboard';
+import AdminAuth from './pages/AdminAuth';
+import AdminDashboard from './pages/AdminDashboard';
 
 // Placeholders for Dashboard/Auth
 const LoginPlaceholder = () => <div className="p-10 text-center">Login Page</div>;
@@ -34,7 +36,11 @@ function App() {
           <Route path="/investor/auth" element={<InvestorAuth />} />
 
           <Route path="/land-owner/*" element={<LandOwnerDashboard />} />
-          <Route path="/investor/dashboard/*" element={<InvestorDashboard />} />
+          <Route path="/investor/dashboard" element={<InvestorDashboard />} />
+
+          {/* Admin Routes */}
+          <Route path="/admin" element={<AdminAuth />} />
+          <Route path="/admin/dashboard" element={<AdminDashboard />} />
 
           {/* Fallback */}
           <Route path="*" element={<Navigate to="/" replace />} />
