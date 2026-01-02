@@ -96,6 +96,17 @@ export default {
                     '40%': { opacity: 1 },
                     '100%': { opacity: 0, transform: 'translateY(-60px) scale(1.2)' },
                 }
+            },
+            animation: {
+                'spin-slow': 'spin 3s linear infinite',
+                'float': 'float 6s ease-in-out infinite',
+                'float-slow': 'float 8s ease-in-out infinite reverse',
+                'slide-up': 'notificationSlide 6s ease-in-out infinite',
+                'rise': 'rise 4s ease-out infinite',
+                'shimmer': 'shimmer 8s linear infinite',
+                'scale-in': 'scaleIn 0.3s ease-out',
+                'fade-in': 'fadeIn 0.5s ease-out',
+                'fade-in-up': 'countUp 0.8s ease-out forwards',
             }
         },
     },

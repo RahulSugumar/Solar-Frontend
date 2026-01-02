@@ -17,7 +17,12 @@ const InvestorDashboard = () => {
     // Modal State
     const [showAddModal, setShowAddModal] = useState(false);
     const [showWithdrawModal, setShowWithdrawModal] = useState(false);
+    const [showInvestModal, setShowInvestModal] = useState(false);
+
+    // Transaction State
     const [amount, setAmount] = useState("");
+    const [investAmount, setInvestAmount] = useState("");
+    const [selectedLand, setSelectedLand] = useState(null);
     const [processing, setProcessing] = useState(false);
 
     const handleTransaction = async (type) => {
@@ -36,6 +41,44 @@ const InvestorDashboard = () => {
             setAmount("");
         } catch (error) {
             alert(error.response?.data?.detail || "Transaction Failed");
+        } finally {
+            setProcessing(false);
+        }
+    };
+
+    const handleInvest = async () => {
+        if (!investAmount || isNaN(investAmount) || investAmount <= 0) {
+            alert("Please enter a valid investment amount");
+            return;
+        }
+        setProcessing(true);
+        try {
+            // Need user ID, get from storage or context (api handles header)
+            const userId = localStorage.getItem('user_id');
+            const payload = {
+                land_id: selectedLand.id,
+                investor_id: userId,
+                amount: parseFloat(investAmount)
+            };
+
+            await api.post('/invest/request', payload);
+            alert("Investment Request Sent! Waiting for Admin Approval.");
+            setShowInvestModal(false);
+            setInvestAmount("");
+            setSelectedLand(null);
+
+            // Refresh Portfolio & Market Data
+            try {
+                const portfolioRes = await api.get('/invest/my-investments');
+                setMyInvestments(portfolioRes.data);
+
+                const marketRes = await api.get('/invest/available-lands');
+                setMarketLands(marketRes.data);
+            } catch (e) { }
+
+        } catch (error) {
+            console.error("Invest Error", error);
+            alert(error.response?.data?.detail || "Investment Failed");
         } finally {
             setProcessing(false);
         }
@@ -100,9 +143,15 @@ const InvestorDashboard = () => {
     );
 
     return (
-        <div className="flex h-screen bg-gray-50 font-sans overflow-hidden relative selection:bg-invest-primary/10">
+        <div className="flex h-screen bg-invest-bg font-sans overflow-hidden relative selection:bg-invest-primary/10">
             {/* Background Decoration */}
-            <div className="absolute top-0 right-0 w-[800px] h-[800px] bg-invest-primary/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2 pointer-events-none"></div>
+            <div className="absolute top-0 right-0 w-[800px] h-[800px] bg-invest-primary/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2 pointer-events-none animate-float-slow"></div>
+            <div className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-yellow-500/5 rounded-full blur-3xl translate-y-1/2 -translate-x-1/2 pointer-events-none animate-float"></div>
+
+            {/* Floating particles */}
+            <div className="absolute top-1/4 left-1/3 w-4 h-4 bg-invest-primary/20 rounded-full blur-sm animate-rise" style={{ animationDelay: '0s' }}></div>
+            <div className="absolute top-3/4 right-1/4 w-6 h-6 bg-yellow-400/20 rounded-full blur-sm animate-rise" style={{ animationDelay: '2s' }}></div>
+            <div className="absolute top-1/2 left-1/2 w-3 h-3 bg-orange-400/20 rounded-full blur-sm animate-rise" style={{ animationDelay: '4s' }}></div>
 
             {/* ================= SIDEBAR ================= */}
             <aside className="w-72 bg-white border-r border-gray-100 hidden md:flex flex-col z-20 shadow-sm">
@@ -166,13 +215,13 @@ const InvestorDashboard = () => {
                 </div>
 
                 <div className="animate-fade-in-up" style={{ animationDelay: '0.1s' }}>
-                    {activeTab === 'overview' && <OverviewSection marketLands={marketLands} myInvestments={myInvestments} walletBalance={walletBalance} />}
-                    {activeTab === 'marketplace' && <MarketplaceSection lands={marketLands} />}
+                    {activeTab === 'overview' && <OverviewSection marketLands={marketLands} myInvestments={myInvestments} walletBalance={walletBalance} onInvest={(land) => { setSelectedLand(land); setShowInvestModal(true); }} />}
+                    {activeTab === 'marketplace' && <MarketplaceSection lands={marketLands} onInvest={(land) => { setSelectedLand(land); setShowInvestModal(true); }} />}
                     {activeTab === 'portfolio' && <PortfolioSection investments={myInvestments} />}
                     {activeTab === 'wallet' && <WalletSection balance={walletBalance} onAdd={() => setShowAddModal(true)} onWithdraw={() => setShowWithdrawModal(true)} />}
                 </div>
 
-                {/* Modals */}
+                {/* Wallet Modals */}
                 {(showAddModal || showWithdrawModal) && (
                     <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4 animate-fade-in">
                         <div className="bg-white rounded-3xl p-8 max-w-md w-full shadow-2xl relative overflow-hidden">
@@ -217,6 +266,60 @@ const InvestorDashboard = () => {
                     </div>
                 )}
 
+                {/* Investment Modal */}
+                {showInvestModal && selectedLand && (
+                    <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4 animate-fade-in">
+                        <div className="bg-white rounded-3xl p-8 max-w-md w-full shadow-2xl relative overflow-hidden">
+                            <div className="absolute top-0 left-0 w-full h-2 bg-invest-primary"></div>
+                            <h3 className="text-2xl font-bold text-gray-900 mb-1">Invest in Future</h3>
+                            <p className="text-gray-500 text-sm mb-4">You are investing in <span className="font-bold text-gray-800">{selectedLand.title}</span></p>
+
+                            <div className="bg-gray-50 p-4 rounded-xl mb-6 border border-gray-100 text-sm space-y-2">
+                                <div className="flex justify-between">
+                                    <span className="text-gray-500">Target IRR</span>
+                                    <span className="font-bold text-invest-primary">12-14%</span>
+                                </div>
+                                <div className="flex justify-between">
+                                    <span className="text-gray-500">Required Investment</span>
+                                    <span className="font-bold text-gray-900">₹ {selectedLand.total_price?.toLocaleString() || "N/A"}</span>
+                                </div>
+                            </div>
+
+                            <div className="space-y-4">
+                                <div>
+                                    <label className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-1 block">Investment Amount</label>
+                                    <div className="relative">
+                                        <span className="absolute left-4 top-1/2 -translate-y-1/2 font-bold text-gray-400">₹</span>
+                                        <input
+                                            type="number"
+                                            value={investAmount}
+                                            onChange={(e) => setInvestAmount(e.target.value)}
+                                            className="w-full bg-gray-50 border-2 border-gray-100 rounded-xl py-3 pl-10 pr-4 outline-none focus:border-green-500 focus:ring-4 focus:ring-green-500/10 transition-all font-bold text-lg text-gray-900"
+                                            placeholder={selectedLand.total_price}
+                                        />
+                                    </div>
+                                </div>
+
+                                <div className="flex gap-3 pt-2">
+                                    <button
+                                        onClick={() => { setShowInvestModal(false); setInvestAmount(""); setSelectedLand(null); }}
+                                        className="flex-1 py-3 text-gray-500 font-bold hover:bg-gray-50 rounded-xl transition-colors"
+                                    >
+                                        Cancel
+                                    </button>
+                                    <button
+                                        onClick={handleInvest}
+                                        disabled={processing}
+                                        className="flex-1 py-3 bg-gray-900 text-white font-bold rounded-xl hover:bg-green-600 transition-colors shadow-lg shadow-green-500/20 disabled:opacity-70 flex items-center justify-center gap-2"
+                                    >
+                                        {processing ? 'Processing...' : 'Confirm Invest'}
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                )}
+
             </main>
         </div>
     );
@@ -254,30 +357,43 @@ const StatCard = ({ icon, label, value, trend }) => (
     </div>
 );
 
-const OverviewSection = ({ marketLands, myInvestments, walletBalance }) => (
-    <div className="space-y-10">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            <StatCard icon={<PieChart />} label="Total Invested" value={`₹ ${myInvestments.length * 50000}`} trend="+12.5%" />
-            <StatCard icon={<TrendingUp />} label="Total Earnings" value={`₹ ${(myInvestments.length * 50000 * 0.142).toLocaleString()}`} trend="+2.4%" />
-            <StatCard icon={<Shield />} label="Active Projects" value={myInvestments.length} />
-            <StatCard icon={<Wallet />} label="Available Funds" value={`₹ ${walletBalance.toLocaleString()}`} />
-        </div>
+const OverviewSection = ({ marketLands, myInvestments, walletBalance, onInvest }) => {
+    const totalInvested = myInvestments.reduce((sum, inv) => sum + (inv.amount || 0), 0);
+    const totalEarnings = totalInvested * 0.142; // Mock ROI logic for now
 
-        {/* Featured Opportunities */}
-        <div>
-            <div className="flex justify-between items-center mb-6">
-                <h3 className="text-xl font-bold text-gray-800">Featured Opportunities</h3>
-                <button className="text-invest-primary font-bold text-sm hover:underline">View Market</button>
+    return (
+        <div className="space-y-10">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div className="animate-fade-in-up" style={{ animationDelay: '0.1s' }}>
+                    <StatCard icon={<PieChart />} label="Total Invested" value={`₹ ${totalInvested.toLocaleString()}`} trend="+12.5%" />
+                </div>
+                <div className="animate-fade-in-up" style={{ animationDelay: '0.2s' }}>
+                    <StatCard icon={<TrendingUp />} label="Total Earnings" value={`₹ ${totalEarnings.toLocaleString(undefined, { maximumFractionDigits: 0 })}`} trend="+2.4%" />
+                </div>
+                <div className="animate-fade-in-up" style={{ animationDelay: '0.3s' }}>
+                    <StatCard icon={<Shield />} label="Active Projects" value={myInvestments.length} />
+                </div>
+                <div className="animate-fade-in-up" style={{ animationDelay: '0.4s' }}>
+                    <StatCard icon={<Wallet />} label="Available Funds" value={`₹ ${walletBalance.toLocaleString()}`} />
+                </div>
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                {marketLands.slice(0, 3).map(land => <MarketCard key={land.id} land={land} />)}
-                {marketLands.length === 0 && <p className="text-gray-400 italic col-span-3 text-center py-10">No active listings available right now.</p>}
+
+            {/* Featured Opportunities */}
+            <div className="animate-fade-in-up" style={{ animationDelay: '0.5s' }}>
+                <div className="flex justify-between items-center mb-6">
+                    <h3 className="text-xl font-bold text-gray-800">Featured Opportunities</h3>
+                    <button className="text-invest-primary font-bold text-sm hover:underline">View Market</button>
+                </div>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    {marketLands.slice(0, 3).map(land => <MarketCard key={land.id} land={land} onInvest={onInvest} />)}
+                    {marketLands.length === 0 && <p className="text-gray-400 italic col-span-3 text-center py-10">No active listings available right now.</p>}
+                </div>
             </div>
         </div>
-    </div>
-);
+    );
+};
 
-const MarketCard = ({ land }) => (
+const MarketCard = ({ land, onInvest }) => (
     <div className="bg-white rounded-2xl border border-gray-100 overflow-hidden hover:shadow-xl transition-all duration-300 hover:-translate-y-1 group">
         <div className="h-40 bg-gray-200 relative overflow-hidden">
             {/* Mock Image Placeholder */}
@@ -296,8 +412,8 @@ const MarketCard = ({ land }) => (
                 <div className="font-bold text-green-600">12-14%</div>
             </div>
             <div className="flex justify-between text-sm">
-                <div className="text-gray-500">Min Investment</div>
-                <div className="font-bold text-gray-900">₹ 50,000</div>
+                <div className="text-gray-500">Land Value</div>
+                <div className="font-bold text-gray-900">₹ {land.total_price?.toLocaleString() || "N/A"}</div>
             </div>
 
             <div className="w-full bg-gray-100 rounded-full h-2 overflow-hidden">
@@ -308,21 +424,21 @@ const MarketCard = ({ land }) => (
                 <span>4 Days Left</span>
             </div>
 
-            <button className="w-full py-3 bg-gray-900 text-white rounded-xl font-bold hover:bg-invest-primary transition-colors flex items-center justify-center gap-2">
+            <button onClick={() => onInvest(land)} className="w-full py-3 bg-gray-900 text-white rounded-xl font-bold hover:bg-invest-primary transition-colors flex items-center justify-center gap-2">
                 Invest Now <ArrowUpRight size={16} />
             </button>
         </div>
     </div>
 );
 
-const MarketplaceSection = ({ lands }) => (
+const MarketplaceSection = ({ lands, onInvest }) => (
     <div>
         <div className="flex gap-4 mb-8 bg-white p-2 rounded-2xl border border-gray-100 w-full max-w-lg shadow-sm">
             <Search className="text-gray-400 ml-2" />
             <input type="text" placeholder="Search by location, return rate..." className="w-full outline-none text-gray-700 font-medium" />
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {lands.map(land => <MarketCard key={land.id} land={land} />)}
+            {lands.map(land => <MarketCard key={land.id} land={land} onInvest={onInvest} />)}
             {lands.length === 0 && <p className="text-gray-400 italic col-span-3 text-center py-20 bg-white rounded-3xl border border-dashed">No lands found.</p>}
         </div>
     </div>
@@ -347,10 +463,18 @@ const PortfolioSection = ({ investments }) => (
                     <tr key={inv.id} className="hover:bg-gray-50 transition">
                         <td className="px-6 py-4 font-bold text-gray-900">Solar Farm #{inv.land_id}</td>
                         <td className="px-6 py-4 text-gray-500">{new Date(inv.created_at || Date.now()).toLocaleDateString()}</td>
-                        <td className="px-6 py-4 font-medium">₹ {inv.amount}</td>
-                        <td className="px-6 py-4 font-medium text-green-600">₹ {(inv.amount * 1.05).toFixed(0)}</td>
+                        <td className="px-6 py-4 font-medium">₹ {inv.amount.toLocaleString()}</td>
+                        <td className="px-6 py-4 font-medium text-invest-primary">
+                            {inv.status === 'pending_approval' ? '-' : `₹ ${(inv.amount * 1.05).toFixed(0)}`}
+                        </td>
                         <td className="px-6 py-4">
-                            <span className="bg-green-100 text-green-700 px-2 py-1 rounded-md text-xs font-bold uppercase">{inv.status}</span>
+                            <span className={`px-2 py-1 rounded-md text-xs font-bold uppercase ${inv.status === 'pending_approval' ? 'bg-yellow-100 text-yellow-700' :
+                                inv.status === 'completed' || inv.status === 'active' ? 'bg-green-100 text-green-700' :
+                                    'bg-gray-100 text-gray-600'
+                                }`}>
+                                {inv.status === 'pending_approval' ? 'Reserved' :
+                                    inv.status === 'completed' ? 'Active' : inv.status}
+                            </span>
                         </td>
                     </tr>
                 ))}
