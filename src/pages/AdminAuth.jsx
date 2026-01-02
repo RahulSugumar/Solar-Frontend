@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { Shield, Lock, ChevronRight, AlertCircle, Eye, EyeOff, Hexagon, Command } from 'lucide-react';
 import gsap from 'gsap';
 import api from '../api';
@@ -160,9 +160,13 @@ const AdminAuth = () => {
                     </form>
 
                     <div className="stagger-input mt-8 text-center">
-                        <button onClick={() => navigate('/', { replace: true })} className="text-[10px] text-gray-600 hover:text-gray-400 transition-colors uppercase tracking-widest font-bold border-b border-transparent hover:border-gray-600 pb-0.5">
+                        <Link
+                            to="/"
+                            replace
+                            className="text-[10px] text-gray-600 hover:text-gray-400 transition-colors uppercase tracking-widest font-bold border-b border-transparent hover:border-gray-600 pb-0.5"
+                        >
                             Return to Homepage
-                        </button>
+                        </Link>
                     </div>
                 </div>
             </div>

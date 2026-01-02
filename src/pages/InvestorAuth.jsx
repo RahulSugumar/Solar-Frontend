@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { Mail, Lock, User, Phone, ArrowRight, ArrowLeft, Briefcase, Eye, EyeOff, TrendingUp, ShieldCheck, Coins, BarChart3, Sun, Zap, DollarSign } from 'lucide-react';
 import api from '../api'; // Import the axios instance
 
@@ -298,12 +298,13 @@ const InvestorAuth = () => {
                     </div>
 
                     <div className="mt-8 text-center bg-white/50 backdrop-blur-sm p-4 rounded-xl border border-white/40 shadow-sm max-w-sm mx-auto">
-                        <button
-                            onClick={() => navigate('/', { replace: true })}
+                        <Link
+                            to="/"
+                            replace
                             className="text-sm font-bold text-gray-500 hover:text-invest-primary hover:underline flex items-center justify-center gap-2 mx-auto transition-colors"
                         >
                             <ArrowLeft size={16} /> Return to Homepage
-                        </button>
+                        </Link>
                     </div>
                 </div>
             </div>
