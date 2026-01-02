@@ -14,6 +14,33 @@ const InvestorDashboard = () => {
     const [walletBalance, setWalletBalance] = useState(0);
     const [loading, setLoading] = useState(true);
 
+    // Modal State
+    const [showAddModal, setShowAddModal] = useState(false);
+    const [showWithdrawModal, setShowWithdrawModal] = useState(false);
+    const [amount, setAmount] = useState("");
+    const [processing, setProcessing] = useState(false);
+
+    const handleTransaction = async (type) => {
+        if (!amount || isNaN(amount) || amount <= 0) {
+            alert("Please enter a valid amount");
+            return;
+        }
+        setProcessing(true);
+        try {
+            const endpoint = type === 'add' ? '/invest/wallet/add' : '/invest/wallet/withdraw';
+            const res = await api.post(endpoint, { amount: parseFloat(amount) });
+            setWalletBalance(res.data.balance);
+            alert(type === 'add' ? "Funds Added!" : "Withdrawal Successful!");
+            setShowAddModal(false);
+            setShowWithdrawModal(false);
+            setAmount("");
+        } catch (error) {
+            alert(error.response?.data?.detail || "Transaction Failed");
+        } finally {
+            setProcessing(false);
+        }
+    };
+
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -142,8 +169,53 @@ const InvestorDashboard = () => {
                     {activeTab === 'overview' && <OverviewSection marketLands={marketLands} myInvestments={myInvestments} walletBalance={walletBalance} />}
                     {activeTab === 'marketplace' && <MarketplaceSection lands={marketLands} />}
                     {activeTab === 'portfolio' && <PortfolioSection investments={myInvestments} />}
-                    {activeTab === 'wallet' && <WalletSection balance={walletBalance} />}
+                    {activeTab === 'wallet' && <WalletSection balance={walletBalance} onAdd={() => setShowAddModal(true)} onWithdraw={() => setShowWithdrawModal(true)} />}
                 </div>
+
+                {/* Modals */}
+                {(showAddModal || showWithdrawModal) && (
+                    <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4 animate-fade-in">
+                        <div className="bg-white rounded-3xl p-8 max-w-md w-full shadow-2xl relative overflow-hidden">
+                            <div className="absolute top-0 left-0 w-full h-2 bg-invest-primary"></div>
+                            <h3 className="text-2xl font-bold text-gray-900 mb-2">
+                                {showAddModal ? "Add Funds" : "Withdraw Funds"}
+                            </h3>
+                            <p className="text-gray-500 mb-6 text-sm">
+                                {showAddModal ? "Securely add money to your solar wallet." : "Withdraw earnings to your bank account."}
+                            </p>
+
+                            <div className="space-y-4">
+                                <div className="relative">
+                                    <span className="absolute left-4 top-1/2 -translate-y-1/2 font-bold text-gray-400">₹</span>
+                                    <input
+                                        type="number"
+                                        value={amount}
+                                        onChange={(e) => setAmount(e.target.value)}
+                                        className="w-full bg-gray-50 border-2 border-gray-100 rounded-xl py-3 pl-10 pr-4 outline-none focus:border-invest-primary focus:ring-4 focus:ring-invest-primary/10 transition-all font-bold text-lg text-gray-900"
+                                        placeholder="0.00"
+                                        autoFocus
+                                    />
+                                </div>
+
+                                <div className="flex gap-3 pt-2">
+                                    <button
+                                        onClick={() => { setShowAddModal(false); setShowWithdrawModal(false); setAmount(""); }}
+                                        className="flex-1 py-3 text-gray-500 font-bold hover:bg-gray-50 rounded-xl transition-colors"
+                                    >
+                                        Cancel
+                                    </button>
+                                    <button
+                                        onClick={() => handleTransaction(showAddModal ? 'add' : 'withdraw')}
+                                        disabled={processing}
+                                        className="flex-1 py-3 bg-invest-primary text-white font-bold rounded-xl hover:bg-yellow-600 transition-colors shadow-lg shadow-invest-primary/20 disabled:opacity-70"
+                                    >
+                                        {processing ? 'Processing...' : 'Confirm'}
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                )}
 
             </main>
         </div>
@@ -287,7 +359,7 @@ const PortfolioSection = ({ investments }) => (
     </div>
 );
 
-const WalletSection = ({ balance }) => (
+const WalletSection = ({ balance, onAdd, onWithdraw }) => (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
         <div className="bg-gradient-to-br from-gray-900 to-gray-800 text-white p-8 rounded-3xl shadow-xl relative overflow-hidden">
             {/* Card Decoration */}
@@ -297,10 +369,10 @@ const WalletSection = ({ balance }) => (
             <h2 className="text-5xl font-display font-bold mb-8">₹ {balance?.toLocaleString()}</h2>
 
             <div className="flex gap-4">
-                <button className="flex-1 bg-invest-primary hover:bg-yellow-500 text-white py-3 rounded-xl font-bold transition-colors shadow-lg shadow-invest-primary/20">
+                <button onClick={onAdd} className="flex-1 bg-invest-primary hover:bg-yellow-500 text-white py-3 rounded-xl font-bold transition-colors shadow-lg shadow-invest-primary/20">
                     Add Funds
                 </button>
-                <button className="flex-1 bg-white/10 hover:bg-white/20 text-white py-3 rounded-xl font-bold transition-colors backdrop-blur-md">
+                <button onClick={onWithdraw} className="flex-1 bg-white/10 hover:bg-white/20 text-white py-3 rounded-xl font-bold transition-colors backdrop-blur-md">
                     Withdraw
                 </button>
             </div>
