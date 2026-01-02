@@ -8,11 +8,11 @@ import LandOwnerAuth from './pages/LandOwnerAuth';
 import InvestorAuth from './pages/InvestorAuth';
 import LandOwnerDashboard from './pages/LandOwnerDashboard';
 import LandSubmission from './pages/LandSubmission';
+import InvestorDashboard from './pages/InvestorDashboard';
 
 // Placeholders for Dashboard/Auth
 const LoginPlaceholder = () => <div className="p-10 text-center">Login Page</div>;
 const RegisterPlaceholder = () => <div className="p-10 text-center">Register Page</div>;
-const InvestorDashboard = () => <div className="p-10 text-center bg-invest-bg h-screen text-invest-primary">Investor Dashboard</div>;
 
 function App() {
   return (
@@ -34,7 +34,7 @@ function App() {
           <Route path="/investor/auth" element={<InvestorAuth />} />
 
           <Route path="/land-owner/*" element={<LandOwnerDashboard />} />
-          <Route path="/investor/*" element={<InvestorDashboard />} />
+          <Route path="/investor/dashboard/*" element={<InvestorDashboard />} />
 
           {/* Fallback */}
           <Route path="*" element={<Navigate to="/" replace />} />

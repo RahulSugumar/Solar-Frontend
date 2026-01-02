@@ -152,7 +152,7 @@ const InvestorAuth = () => {
                 </div>
 
                 {/* Toggle Switch */}
-                <div className="absolute top-8 right-8 flex border border-gray-200 rounded-full p-1 bg-gray-50">
+                <div className="absolute top-8 right-8 flex border border-gray-200 rounded-full p-1 bg-gray-50 z-50">
                     <button
                         onClick={() => setIsLogin(true)}
                         className={`px-6 py-2 rounded-full text-sm font-bold transition-all ${isLogin ? 'bg-white text-invest-primary shadow-sm' : 'text-gray-400 hover:text-gray-600'}`}
