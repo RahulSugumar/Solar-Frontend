@@ -9,6 +9,11 @@ const LandOwnerAuth = () => {
     const [loading, setLoading] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
 
+    // Clear existing session on mount to prevent stale login states
+    React.useEffect(() => {
+        localStorage.removeItem('user_id');
+    }, []);
+
     // Form State
     const [formData, setFormData] = useState({
         full_name: '',

@@ -6,11 +6,12 @@ import LandOwnerWelcome from './pages/LandOwnerWelcome';
 import InvestorWelcome from './pages/InvestorWelcome';
 import LandOwnerAuth from './pages/LandOwnerAuth';
 import InvestorAuth from './pages/InvestorAuth';
+import LandOwnerDashboard from './pages/LandOwnerDashboard';
+import LandSubmission from './pages/LandSubmission';
 
 // Placeholders for Dashboard/Auth
 const LoginPlaceholder = () => <div className="p-10 text-center">Login Page</div>;
 const RegisterPlaceholder = () => <div className="p-10 text-center">Register Page</div>;
-const LandOwnerDashboard = () => <div className="p-10 text-center bg-land-bg h-screen text-land-primary">Land Owner Dashboard</div>;
 const InvestorDashboard = () => <div className="p-10 text-center bg-invest-bg h-screen text-invest-primary">Investor Dashboard</div>;
 
 function App() {
@@ -26,9 +27,12 @@ function App() {
           <Route path="/login" element={<LoginPlaceholder />} />
           <Route path="/register" element={<RegisterPlaceholder />} />
 
+
           {/* Private Routes (We will add protection later) */}
           <Route path="/land-owner/auth" element={<LandOwnerAuth />} />
+          <Route path="/land-owner/submit" element={<LandSubmission />} />
           <Route path="/investor/auth" element={<InvestorAuth />} />
+
           <Route path="/land-owner/*" element={<LandOwnerDashboard />} />
           <Route path="/investor/*" element={<InvestorDashboard />} />
 

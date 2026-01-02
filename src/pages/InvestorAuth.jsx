@@ -9,6 +9,11 @@ const InvestorAuth = () => {
     const [loading, setLoading] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
 
+    // Clear existing session on mount to prevent stale login states
+    React.useEffect(() => {
+        localStorage.removeItem('user_id');
+    }, []);
+
     // Form State
     const [formData, setFormData] = useState({
         full_name: '',
@@ -141,6 +146,9 @@ const InvestorAuth = () => {
                     <div className="absolute -top-20 -right-20 w-96 h-96 bg-yellow-100/50 rounded-full blur-3xl animate-pulse"></div>
                     {/* Bottom Left Blob */}
                     <div className="absolute -bottom-20 -left-20 w-80 h-80 bg-orange-100/40 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '2s' }}></div>
+                    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-10">
+                        <Sun size={600} className="text-orange-300 animate-[spin_60s_linear_infinite]" />
+                    </div>
                 </div>
 
                 {/* Toggle Switch */}
